@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const Body = ({ fileId, updateTitle, getFileById }) => {
+const Body = ({ fileId, updateTitle, getFileById, isTitleAvailable }) => {
     const [title, setTitle] = useState('');
 
     useEffect(() => {
@@ -20,7 +20,7 @@ const Body = ({ fileId, updateTitle, getFileById }) => {
                 onKeyDown={(e) => {
                     if (e.key !== 'Enter') return;
                     e.preventDefault();
-                    updateTitle(fileId, title);
+                    isTitleAvailable(title) ? updateTitle(fileId, title) : null;
                 }}
             />
             <main>

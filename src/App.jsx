@@ -20,6 +20,11 @@ function App() {
             }),
         );
     }
+
+    function isTitleAvailable(title) {
+        return !files.some((file) => file.title === title);
+    }
+
     return (
         <>
             <div className="flex">
@@ -32,6 +37,7 @@ function App() {
                     fileId={selectedFile}
                     updateTitle={updateTitle}
                     getFileById={getFileById}
+                    isTitleAvailable={isTitleAvailable}
                 />
             </div>
         </>
