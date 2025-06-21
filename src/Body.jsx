@@ -1,12 +1,22 @@
 import { useEffect, useState } from 'react';
 
-const Body = ({ fileId, updateTitle, getFileById, isTitleAvailable }) => {
+const Body = ({ files, fileId }) => {
     const [title, setTitle] = useState('');
 
+    function updateTitle(id, newTitle) {
+        const file = files[id];
+        setFiles({ ...files, id: { ...file, title: newTitle } });
+    }
+
+    function isTitleAvailable(title) {
+        return !files.some((file) => file.title === title);
+    }
+
     useEffect(() => {
-        const file = getFileById(fileId);
+        const file = files[fileId];
         setTitle(file?.title || '');
     }, [fileId]);
+
     return fileId ? (
         <div className="border border-red-500 w-[85vw] min-h-[100vh] pl-5">
             <input

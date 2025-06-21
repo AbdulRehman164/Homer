@@ -1,12 +1,12 @@
-const Header = ({ tabs, selectedTab, getFileById }) => {
+const Header = ({ tabs, selectedTab, files }) => {
     return (
         <header className="h-[5vh] w-[full] flex">
-            {tabs.map((tab) => (
+            {Object.keys(tabs).map((key) => (
                 <div
-                    key={tab?.id}
-                    className={`${tab?.id === selectedTab ? 'border' : ''}`}
+                    key={key}
+                    className={`${key === selectedTab ? 'border' : ''}`}
                 >
-                    {getFileById(tab?.openedFile)?.title}
+                    {files[tabs[key]?.openedFile]?.title}
                 </div>
             ))}
         </header>

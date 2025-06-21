@@ -1,5 +1,3 @@
-import { useEffect, useRef } from 'react';
-
 const Sidebar = ({
     files,
     setFiles,
@@ -8,19 +6,19 @@ const Sidebar = ({
     setTabs,
     tabs,
 }) => {
-    const prevLengthRef = useRef(files.length);
-
     function getNextUntitled(files) {
         const base = 'Untitled';
-        const isBaseNameUsed = files.some((file) => file.title === base);
+        const isBaseNameUsed = Object.keys(files).some(
+            (key) => files[key]?.title === base,
+        );
         if (!isBaseNameUsed) {
             return base;
         }
 
         const pattern = /^untitled ([1-9]\d*)$/i;
-        const numbers = files
-            .filter((file) => pattern.test(file.title))
-            .map((file) => Number(file.title.split(' ')[1]));
+        const numbers = Object.keys(files)
+            .filter((key) => pattern.test(files[key]?.title))
+            .map((key) => Number(files[key]?.title.split(' ')[1]));
 
         const max = numbers.length ? Math.max(...numbers) : 1;
 
@@ -40,39 +38,34 @@ const Sidebar = ({
                     const fileId = crypto.randomUUID();
                     const fileTitle = getNextUntitled(files);
                     const tabId = crypto.randomUUID();
-                    setFiles([
+                    setFiles({
                         ...files,
-                        {
-                            id: fileId,
+                        [fileId]: {
                             title: fileTitle,
                             content: '',
                         },
-                    ]);
-                    setTabs([...tabs, { id: tabId, openedFile: fileId }]);
+                    });
+                    setTabs({ ...tabs, [tabId]: { openedFile: fileId } });
                     setSelectedTab(tabId);
                 }}
             >
                 File
             </button>
-            {files?.map((file) => (
-                <div
-                    key={file?.id}
-                    onClick={() => {
-                        setTabs(
-                            tabs.map((tab) =>
-                                tab?.id === selectedTab
-                                    ? {
-                                          ...tab,
-                                          openedFile: file?.id,
-                                      }
-                                    : tab,
-                            ),
-                        );
-                    }}
-                >
-                    {file.title || 'untitled'}
-                </div>
-            ))}
+            {Object.keys(files).map((key) => {
+                return (
+                    <div
+                        key={key}
+                        onClick={() => {
+                            setTabs({
+                                ...tabs,
+                                [selectedTab]: { openedFile: key },
+                            });
+                        }}
+                    >
+                        {files[key]?.title}
+                    </div>
+                );
+            })}
         </div>
     );
 };

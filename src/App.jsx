@@ -4,41 +4,14 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 
 function App() {
-    const [files, setFiles] = useState([]);
-    const [tabs, setTabs] = useState([]);
+    const [files, setFiles] = useState({});
+    const [tabs, setTabs] = useState({});
     const [selectedTab, setSelectedTab] = useState('');
-    const openedTab = getTabById(selectedTab);
-
-    function getTabById(id) {
-        return tabs.find((tab) => tab.id === id);
-    }
-
-    function getFileById(id) {
-        return files.find((file) => file.id === id);
-    }
-
-    function updateTitle(id, newTitle) {
-        setFiles(
-            files.map((file) => {
-                if (file.id == id) {
-                    return { ...file, title: newTitle };
-                }
-                return file;
-            }),
-        );
-    }
-
-    function isTitleAvailable(title) {
-        return !files.some((file) => file.title === title);
-    }
+    const openedTab = tabs[selectedTab];
 
     return (
         <>
-            <Header
-                tabs={tabs}
-                selectedTab={selectedTab}
-                getFileById={getFileById}
-            />
+            <Header tabs={tabs} selectedTab={selectedTab} files={files} />
             <div className="flex">
                 <Sidebar
                     files={files}
@@ -48,12 +21,7 @@ function App() {
                     setTabs={setTabs}
                     tabs={tabs}
                 />
-                <Body
-                    fileId={openedTab?.openedFile}
-                    updateTitle={updateTitle}
-                    getFileById={getFileById}
-                    isTitleAvailable={isTitleAvailable}
-                />
+                <Body files={files} fileId={openedTab?.openedFile} />
             </div>
         </>
     );
