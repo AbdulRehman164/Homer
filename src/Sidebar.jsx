@@ -1,7 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
-const Sidebar = ({ files, setFiles, setSelectedFile }) => {
-    const [counter, setCounter] = useState(1);
+const Sidebar = ({
+    files,
+    setFiles,
+    setSelectedTab,
+    selectedTab,
+    setTabs,
+    tabs,
+}) => {
     const prevLengthRef = useRef(files.length);
 
     function getNextUntitled(files) {
@@ -27,33 +33,43 @@ const Sidebar = ({ files, setFiles, setSelectedFile }) => {
         return `${base} ${max + 1}`;
     }
 
-    useEffect(() => {
-        if (prevLengthRef.current < files.length) {
-            setSelectedFile(files[files.length - 1]?.id);
-        }
-        prevLengthRef.current = files.length;
-    }, [files]);
-
     return (
         <div className="border border-black w-[15vw] h-[100vh]">
             <button
                 onClick={() => {
-                    const id = crypto.randomUUID();
+                    const fileId = crypto.randomUUID();
+                    const fileTitle = getNextUntitled(files);
+                    const tabId = crypto.randomUUID();
                     setFiles([
                         ...files,
                         {
-                            id,
-                            title: getNextUntitled(files),
+                            id: fileId,
+                            title: fileTitle,
                             content: '',
                         },
                     ]);
-                    setCounter(counter + 1);
+                    setTabs([...tabs, { id: tabId, openedFile: fileId }]);
+                    setSelectedTab(tabId);
                 }}
             >
                 File
             </button>
             {files?.map((file) => (
-                <div key={file?.id} onClick={() => setSelectedFile(file.id)}>
+                <div
+                    key={file?.id}
+                    onClick={() => {
+                        setTabs(
+                            tabs.map((tab) =>
+                                tab?.id === selectedTab
+                                    ? {
+                                          ...tab,
+                                          openedFile: file?.id,
+                                      }
+                                    : tab,
+                            ),
+                        );
+                    }}
+                >
                     {file.title || 'untitled'}
                 </div>
             ))}

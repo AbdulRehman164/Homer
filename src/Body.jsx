@@ -7,7 +7,7 @@ const Body = ({ fileId, updateTitle, getFileById, isTitleAvailable }) => {
         const file = getFileById(fileId);
         setTitle(file?.title || '');
     }, [fileId]);
-    return (
+    return fileId ? (
         <div className="border border-red-500 w-[85vw] min-h-[100vh] pl-5">
             <input
                 placeholder="Untitled"
@@ -31,6 +31,8 @@ const Body = ({ fileId, updateTitle, getFileById, isTitleAvailable }) => {
                 ></div>
             </main>
         </div>
+    ) : (
+        <div className="border border-red-500 w-[85vw] min-h-[100vh] pl-5"></div>
     );
 };
 export default Body;

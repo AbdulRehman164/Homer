@@ -1,10 +1,17 @@
 import { useState } from 'react';
 import Body from './Body';
 import Sidebar from './Sidebar';
+import Header from './Header';
 
 function App() {
     const [files, setFiles] = useState([]);
-    const [selectedFile, setSelectedFile] = useState();
+    const [tabs, setTabs] = useState([]);
+    const [selectedTab, setSelectedTab] = useState('');
+    const openedTab = getTabById(selectedTab);
+
+    function getTabById(id) {
+        return tabs.find((tab) => tab.id === id);
+    }
 
     function getFileById(id) {
         return files.find((file) => file.id === id);
@@ -27,14 +34,22 @@ function App() {
 
     return (
         <>
+            <Header
+                tabs={tabs}
+                selectedTab={selectedTab}
+                getFileById={getFileById}
+            />
             <div className="flex">
                 <Sidebar
                     files={files}
                     setFiles={setFiles}
-                    setSelectedFile={setSelectedFile}
+                    setSelectedTab={setSelectedTab}
+                    selectedTab={selectedTab}
+                    setTabs={setTabs}
+                    tabs={tabs}
                 />
                 <Body
-                    fileId={selectedFile}
+                    fileId={openedTab?.openedFile}
                     updateTitle={updateTitle}
                     getFileById={getFileById}
                     isTitleAvailable={isTitleAvailable}
