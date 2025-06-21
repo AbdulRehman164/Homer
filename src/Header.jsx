@@ -13,9 +13,9 @@ const Header = ({ tabs, selectedTab, setSelectedTab, files, setTabs }) => {
                         className="border border-red"
                         onClick={() => {
                             if (selectedTab === key) {
-                                setSelectedTab(
-                                    arr[index - 1] ? arr[index - 1] : '',
-                                );
+                                const nextTab =
+                                    arr[index + 1] || arr[index - 1] || '';
+                                setSelectedTab(nextTab);
                             }
                             const { [key]: value, ...rest } = tabs;
                             setTabs(rest);
