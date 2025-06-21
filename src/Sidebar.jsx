@@ -31,37 +31,35 @@ const Sidebar = ({
         return `${base} ${max + 1}`;
     }
 
+    function createFile() {
+        const fileId = crypto.randomUUID();
+        const fileTitle = getNextUntitled(files);
+        const tabId = crypto.randomUUID();
+        setFiles({
+            ...files,
+            [fileId]: {
+                title: fileTitle,
+                content: '',
+            },
+        });
+        setTabs({ ...tabs, [tabId]: { openedFile: fileId } });
+        setSelectedTab(tabId);
+    }
+
+    function openFileInSelectedTab(key) {
+        setTabs({
+            ...tabs,
+            [selectedTab]: { openedFile: key },
+        });
+    }
+
     return (
         <div className="border border-black w-[15vw] h-[100vh]">
-            <button
-                onClick={() => {
-                    const fileId = crypto.randomUUID();
-                    const fileTitle = getNextUntitled(files);
-                    const tabId = crypto.randomUUID();
-                    setFiles({
-                        ...files,
-                        [fileId]: {
-                            title: fileTitle,
-                            content: '',
-                        },
-                    });
-                    setTabs({ ...tabs, [tabId]: { openedFile: fileId } });
-                    setSelectedTab(tabId);
-                }}
-            >
-                File
-            </button>
+            <button onClick={createFile}>File</button>
+
             {Object.keys(files).map((key) => {
                 return (
-                    <div
-                        key={key}
-                        onClick={() => {
-                            setTabs({
-                                ...tabs,
-                                [selectedTab]: { openedFile: key },
-                            });
-                        }}
-                    >
+                    <div key={key} onClick={() => openFileInSelectedTab(key)}>
                         {files[key]?.title}
                     </div>
                 );

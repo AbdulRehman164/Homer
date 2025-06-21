@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 
-const Body = ({ files, fileId }) => {
+const Body = ({ files, fileId, setFiles }) => {
     const [title, setTitle] = useState('');
 
     function updateTitle(id, newTitle) {
         const file = files[id];
-        setFiles({ ...files, id: { ...file, title: newTitle } });
+        setFiles({ ...files, [id]: { ...file, title: newTitle } });
     }
 
     function isTitleAvailable(title) {
-        return !files.some((file) => file.title === title);
+        return !Object.keys(files).some((key) => files[key]?.title === title);
     }
 
     useEffect(() => {

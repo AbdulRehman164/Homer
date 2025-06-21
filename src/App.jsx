@@ -21,7 +21,11 @@ function App() {
                     setTabs={setTabs}
                     tabs={tabs}
                 />
-                <Body files={files} fileId={openedTab?.openedFile} />
+                <Body
+                    files={files}
+                    fileId={openedTab?.openedFile}
+                    setFiles={setFiles}
+                />
             </div>
         </>
     );
