@@ -12,9 +12,11 @@ const Header = ({ tabs, selectedTab, setSelectedTab, files, setTabs }) => {
                     <button
                         className="border border-red"
                         onClick={() => {
-                            setSelectedTab(
-                                arr[index - 1] ? arr[index - 1] : '',
-                            );
+                            if (selectedTab === key) {
+                                setSelectedTab(
+                                    arr[index - 1] ? arr[index - 1] : '',
+                                );
+                            }
                             const { [key]: value, ...rest } = tabs;
                             setTabs(rest);
                         }}
