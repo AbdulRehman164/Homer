@@ -11,7 +11,13 @@ function App() {
 
     return (
         <>
-            <Header tabs={tabs} selectedTab={selectedTab} files={files} />
+            <Header
+                tabs={tabs}
+                selectedTab={selectedTab}
+                setSelectedTab={setSelectedTab}
+                files={files}
+                setTabs={setTabs}
+            />
             <div className="flex">
                 <Sidebar
                     files={files}
